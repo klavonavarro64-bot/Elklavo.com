@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    +hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" /> <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <title>Live Location Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  // Create the map
+  const map = L.map('map').setView([0, 0], 13);
+
+  // Add OpenStreetMap tiles
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+  }).addTo(map);
+
+  // Marker for user's location
+  let marker = L.marker([0, 0]).addTo(map);
+
+  if ("geolocation" in navigator) {
+    navigator.geolocation.watchPosition(
+      position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        // Move marker
+        marker.setLatLng([lat, lon]);
+
+        // Center map on new position
+        map.setView([lat, lon], 15);
+
+        console.log(`Lat: ${lat}, Lon: ${lon}`);
+      },
+      error => {
+        alert("Error getting location: " + error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 0
+      }
+    );
+  } else {
+    alert("Geolocation not supported by your browser.");
+  }
+</script>
+
+</body>
+</html>
